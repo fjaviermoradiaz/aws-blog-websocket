@@ -21,24 +21,13 @@ class WebsocketPocStack(core.Stack):
 
         lambda_function.add_to_role_policy(iam.PolicyStatement(
             actions=["execute-api:ManageConnections"],
-            resources=["*"],#arn:aws:execute-api:REGION:ACCOUNT-ID:API-ID/STAGE-NAME/*
+            resources=["arn:aws:execute-api:REGION:ACCOUNT-ID:API-ID/STAGE-NAME/*"],
             effect=iam.Effect.ALLOW
         ))
 
         # Crear la API WebSocket
         api = apigw.WebSocketApi(self, "WebsocketApi")
-        '''api = apigw.WebSocketApi(
-            self, 'WebsocketApi',
-            connect_route_options=apigw.WebSocketRouteOptions(
-                integration=apigw.LambdaWebSocketIntegration(handler=lambda_function),
-            ),
-            disconnect_route_options=apigw.WebSocketRouteOptions(
-                integration=apigw.LambdaWebSocketIntegration(handler=lambda_function),
-            ),
-            default_route_options=apigw.WebSocketRouteOptions(
-                integration=apigw.LambdaWebSocketIntegration(handler=lambda_function),
-            )
-        )'''
+      
 
         # Despliegue de la API
         stage = apigw.WebSocketStage(
